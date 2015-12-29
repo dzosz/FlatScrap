@@ -6,5 +6,5 @@ setup(name='FlatScrap',
       author='tom c.',
       author_email='tom_____@gmail.com',
       url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['Flask', ],
+      install_requires=['Flask', 'Redis'],
      )
