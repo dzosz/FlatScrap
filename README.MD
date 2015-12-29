@@ -1,5 +1,5 @@
 # FlatScrap
-Shows you apartments and rooms for rent in Wroclaw
+Presents on the map apartments and rooms for rent in Wroclaw
 
 ## Functions
 * Gets recent advertisements from external website
