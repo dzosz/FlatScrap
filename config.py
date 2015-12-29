@@ -1,5 +1,5 @@
 import os
-DEBUG = False
+DEBUG = True
 PROPAGATE_EXCEPTIONS = True
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 HOST_NAME = os.environ.get('OPENSHIFT_APP_DNS','localhost')

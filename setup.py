@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name='YourAppName',
-      version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
+setup(name='FlatScrap',
+      version='0.2',
+      description='Map of rooms for rent in Wroclaw',
+      author='tom c.',
+      author_email='tom_____@gmail.com',
       url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['Flask>=0.10.1'],
+      install_requires=['Flask', ],
      )
