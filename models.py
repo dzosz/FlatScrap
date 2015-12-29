@@ -3,10 +3,15 @@ from rq import Queue
 from geopy.geocoders import GoogleV3
 import time
 import json
-from config import REDIS_HOST, REDIS_PORT
+from config import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
 
 
-rdb = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+rdb = redis.StrictRedis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    password=REDIS_PASSWORD
+    )
+
 rqueue = Queue(connection=rdb)
 geolocator = GoogleV3()
 
