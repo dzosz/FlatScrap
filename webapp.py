@@ -6,7 +6,10 @@ import json
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-redis = Redis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'])
+redis = Redis(
+    host=app.config['REDIS_HOST'],
+    port=app.config['REDIS_PORT'],
+    password=app.config['REDIS_PASSWORD'])
 
 
 def get_recent_ads():
