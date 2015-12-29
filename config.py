@@ -1,5 +1,6 @@
 import os
-DEBUG = True
+
+DEBUG = False
 PROPAGATE_EXCEPTIONS = True
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
 HOST_NAME = os.environ.get('OPENSHIFT_APP_DNS','localhost')
@@ -9,3 +10,4 @@ PORT = int(os.environ.get('OPENSHIFT_PYTHON_PORT',8080))
 REDIS_HOST = os.environ.get('OPENSHIFT_REDIS_HOST', '127.0.0.1')
 REDIS_PORT = os.environ.get('OPENSHIFT_REDIS_PORT', 6379)
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '')
+MAX_PAGE_NUMBER = 10

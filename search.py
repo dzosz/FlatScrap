@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from utils import match_words
 from models import rdb, rqueue, convert_address
 from datetime import date, timedelta
-
+from config import MAX_PAGE_NUMBER
 
 def scrap_ad_list(link):
     """Get the list of advertisements"""
@@ -63,13 +63,13 @@ def scrap_subpage(link):
     if locations and title and price:
         return {'title': title, 'price': price, 'locations': locations}
 
-    print('Err (No data): [..]{}'.format(link[13:]))
+    # print('Err (No data): [..]{}'.format(link[13:]))
     return False
 
 
 if __name__ == '__main__':
 
-    for i in range(1, 8):
+    for i in range(1, MAX_PAGE_NUMBER):
         start = 'http://olx.pl/nieruchomosci/stancje-pokoje/wroclaw/?page={}'.format(i)
         links = scrap_ad_list(start)
         verified = verify_links(links)
