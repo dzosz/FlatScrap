@@ -18,8 +18,9 @@ geolocator = GoogleV3()
 
 def convert_address(link, ad_data):
     """
+    ### WORKER JOB ###
     Converts location name to latitude and longituted,
-    then pushes the data to redis db
+    then pushes the data to redis db.
     """
 
     for location in ad_data['locations']:
@@ -28,8 +29,8 @@ def convert_address(link, ad_data):
         new_loc = geolocator.geocode('{}, Wrocław'.format(location.encode('utf-8')))
         if new_loc:
             if new_loc.latitude == 51.1078852 or \
-                    51.01 > new_loc.latitude > 51.20 or \
-                    16.89 > new_loc.longitude > 17.18:
+                    51.035 > new_loc.latitude > 51.20 or \
+                    16.86 > new_loc.longitude > 17.17:
                 continue # did not find the right address
 
             ad_data['coords'] = "{}, {}".format(new_loc.latitude, new_loc.longitude)

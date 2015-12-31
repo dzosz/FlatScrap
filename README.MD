@@ -7,8 +7,8 @@ Presents on the map apartments and rooms for rent in Wroclaw
 * Geocodes address to latitude and longitude
 * Puts gathered data onto the map
 
-## Modes
-* continuous Flask server
-* periodical database updates with cron
+## Structure 
+* Flask server
+* periodical Redis db updates scheduled with cron
   * search for new advertisements
-  * kill the worker after finished (burst mode)
+  * run RQ worker and kill after jobs are finished (burst mode)
