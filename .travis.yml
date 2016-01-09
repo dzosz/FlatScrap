@@ -1,0 +1,14 @@
+language: python
+python:
+    - "3.3"
+# commands to install dependencies - setup.py
+install "pip install ."
+# install "pip install -r requirements.txt"
+# run tests
+script: "python -m unittest"
+deploy:
+    provider: openshift
+    user: $OPENSHIFT_USERNAME
+    password: $OPENSHIFT_PASSWORD
+    app: $OPENSHIFT_APP_NAME
+    domain: $OPENSHIFT_APP_NAMESPACE
