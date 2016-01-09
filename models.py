@@ -36,7 +36,6 @@ def convert_address(link, ad_data):
             ad_data['coords'] = "{}, {}".format(new_loc.latitude, new_loc.longitude)
             rdb.set(link, json.dumps(ad_data))
             rdb.expire(link, 60*60*24*14)
-            # do not check other keywords
-            return True
+            return True # do not check other keywords
     return False
 

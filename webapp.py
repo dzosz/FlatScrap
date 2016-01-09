@@ -9,7 +9,8 @@ app.config.from_pyfile('config.py')
 redis = Redis(
     host=app.config['REDIS_HOST'],
     port=app.config['REDIS_PORT'],
-    password=app.config['REDIS_PASSWORD'])
+    password=app.config['REDIS_PASSWORD']
+    )
 
 
 def get_recent_ads():
@@ -19,7 +20,7 @@ def get_recent_ads():
     """
 
     last_14_days = [(date.today() - timedelta(x)).strftime('%d%m%Y')
-        for x in range(14)]
+                    for x in range(14)]
     links = redis.sunion(last_14_days)
 
     ads = []
