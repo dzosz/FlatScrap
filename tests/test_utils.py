@@ -1,10 +1,11 @@
-from unittest import TestCase, mock
+import requests
+import unittest
+from unittest import mock
 from utils import match_words
 from search import scrap_ad_list, scrap_subpage
-import requests
 
 
-class UtilsTestCase(TestCase):
+class UtilsTestCase(unittest.TestCase):
 
     def test_street_regex(self):
         text="""mieszkanie na ulicy Reja 83 , blisko do Pasaży \
@@ -17,9 +18,7 @@ class UtilsTestCase(TestCase):
         Współlokatorzy mili, spokojni, niekonfliktowi. Studentka i \
         student z UP. W czynsz 625 zł wliczone wszystkie opłaty, \
         dodatkowo jednorazowa zwrotna kaucja 625 zł. pokój około 20m2."""
-
         result = match_words(text)
-        #print(result)
 
         self.assertEqual(len(result), 2)
         self.assertTrue('ul piastowska' in result)
@@ -40,12 +39,14 @@ class UtilsTestCase(TestCase):
         with open('tests/subpage_mock.html') as opener:
             mock_response.content = opener.read()
         mock_get.return_value = mock_response
-
         data_goal = {
             'title': 'Pokój do wynajęcia w okolicy Obornickiej',
             'price': 650,
             'locations': ['ulic Obornickiej']
         }
         result = scrap_subpage('fakelink')
+
         self.assertDictEqual(scrap_subpage('fakelink'), data_goal)
 
+if __name__ == '__main__':
+    unittest.main()
