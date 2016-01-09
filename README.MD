@@ -1,15 +1,9 @@
 [![Build Status](https://travis-ci.org/dzosz/FlatScrap.svg?branch=master)](https://travis-ci.org/dzosz/FlatScrap)
 # FlatScrap
-Presents on the map apartments and rooms for rent in Wroclaw
+Presents on the map apartments and rooms for rent in Wroclaw from last 14 days
 
-## Functions
-* Gets recent advertisements from external website
-* Lookups street names in contents
-* Geocodes address to latitude and longitude
-* Puts gathered data onto the map
+## Structure
+* Flask server with Redis integration
+* Periodical cron job updates the addresses
+* RQ worker and Geopy, geocoding street to latitude ang longitude
 
-## Structure 
-* Flask server
-* periodical Redis db updates scheduled with cron
-  * search for new advertisements
-  * run RQ worker and kill after jobs are finished (burst mode)
