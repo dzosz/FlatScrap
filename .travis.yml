@@ -8,6 +8,7 @@ install:
 # run tests
 script: python -m unittest
 deploy:
+    skip_cleanup: true
     provider: openshift
     user: $OPENSHIFT_USERNAME
     password: $OPENSHIFT_PASSWORD
