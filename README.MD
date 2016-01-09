@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dzosz/FlatScrap.svg?branch=master)](https://travis-ci.org/dzosz/FlatScrap)
 # FlatScrap
 Presents on the map apartments and rooms for rent in Wroclaw
 
