@@ -6,6 +6,8 @@ install:
     - pip install .
 # install "pip install -r requirements.txt"
 # run tests
+services:
+    - redis-server
 script: python -m unittest
 deploy:
     skip_cleanup: true
