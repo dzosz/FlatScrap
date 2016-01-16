@@ -4,23 +4,23 @@ var markers = [];
 var prices = [];
 var allowBubble = true;
 
+function getRecords() {
+    $(function() {
 
-$(function() {
+        $.getJSON('/get_recent_ads', function(data) {
 
-    $.getJSON('/get_recent_ads', function(data) {
+            $.each(data, function(link, values) {
 
-        $.each(data, function(link, values) {
+                addMarker(link, values);
 
-            addMarker(link, values);
+            });
+
+            addHeader();
 
         });
 
-        addHeader();
-
     });
-
-});
-
+};
 
 function CenterControl(controlDiv, map) {
 
@@ -72,6 +72,9 @@ function initMap() {
     // fit the map
     // var bounds = new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
+
+    // Load markers after the creation of map
+    getRecords();
 
 }
 
@@ -161,4 +164,4 @@ function filterMarkers(value) {
 
 
 // wait with init after website is loaded
-// google.maps.event.addDomListener(window, 'load', initMap);
+// google.maps.event.addDomListener(window, 'load', getRecords);
