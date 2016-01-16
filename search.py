@@ -18,7 +18,7 @@ def scrap_ad_list(link):
     page = requests.get(link).content
     soup = BeautifulSoup(page, 'html.parser')
     rows = soup.find_all('h3', 'x-large lheight20 margintop5')
-    links = [row.find('a').get('href') for row in rows]
+    links = [row.find('a').get('href').split('.html')[0]+'.html' for row in rows]
     return links
 
 
@@ -40,7 +40,7 @@ def push_link(link):
     rdb.sadd(date.today().strftime('%d%m%Y'), link)
 
     ad_data, locations = scrap_subpage(link)
-    if ad_data:
+    if ad_data and locations:
         # create key and expire it after 2 weeks
         rqueue.enqueue(convert_address, link, ad_data, locations)
         return True
@@ -61,11 +61,7 @@ def scrap_subpage(link):
     ad_content = ad_page_soup.find('div', id='textContent').find('p', 'pding10 lheight20 large').text
     full_text = '{}. {}'.format(title, ad_content)
     locations = match_words(ad_content)
-    if locations and title and price:
-        return {'title': title, 'price': price}, locations
-
-    # print('Err (No data): [..]{}'.format(link[13:]))
-    return False
+    return {'title': title, 'price': price}, locations
 
 
 if __name__ == '__main__':
