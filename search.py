@@ -12,6 +12,7 @@ from models import rdb, rqueue, convert_address
 from datetime import date, timedelta
 from config import MAX_PAGE_NUMBER
 
+
 def scrap_ad_list(link):
     """Get the list of advertisements"""
     page = requests.get(link).content
@@ -38,10 +39,10 @@ def push_link(link):
     # add ad's link to visited set
     rdb.sadd(date.today().strftime('%d%m%Y'), link)
 
-    ad_data = scrap_subpage(link)
+    ad_data, locations = scrap_subpage(link)
     if ad_data:
         # create key and expire it after 2 weeks
-        rqueue.enqueue(convert_address, link, ad_data)
+        rqueue.enqueue(convert_address, link, ad_data, locations)
         return True
     return False
 
@@ -61,7 +62,7 @@ def scrap_subpage(link):
     full_text = '{}. {}'.format(title, ad_content)
     locations = match_words(ad_content)
     if locations and title and price:
-        return {'title': title, 'price': price, 'locations': locations}
+        return {'title': title, 'price': price, 'location': locations}
 
     # print('Err (No data): [..]{}'.format(link[13:]))
     return False
