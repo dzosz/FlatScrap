@@ -251,7 +251,7 @@ MarkerClusterer.prototype.setupStyles_ = function() {
     this.styles_.push({
       url: this.imagePath_ + (i + 1) + '.' + this.imageExtension_,
       height: size,
-      width: size
+      width: size,
     });
   }
 };
@@ -1055,14 +1055,22 @@ function ClusterIcon(cluster, styles, opt_padding) {
  */
 ClusterIcon.prototype.triggerClusterClick = function() {
   var markerClusterer = this.cluster_.getMarkerClusterer();
-
   // Trigger the clusterclick event.
   google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
 
+  var contentString = '<p>';
+  markers = this.cluster_.getMarkers();
+  for (var i = 0; i < markers.length; i++) {
+    contentString += i+1 +'. <a href="' + markers[i].link + '"target="_blank">' + markers[i].title + '</a><br>';
+  }
+  contentString += '</p>'
+  infoWindow2.setContent(contentString);
+  infoWindow2.setPosition(this.cluster_.getCenter());
+  infoWindow2.open(map);
   if (markerClusterer.isZoomOnClick()) {
     // Zoom into the cluster.
     this.map_.fitBounds(this.cluster_.getBounds());
-  }
+  };
 };
 
 
@@ -1300,11 +1308,11 @@ ClusterIcon.prototype['onAdd'] = ClusterIcon.prototype.onAdd;
 ClusterIcon.prototype['draw'] = ClusterIcon.prototype.draw;
 ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
 
-Object.keys = Object.keys || function(o) {  
-    var result = [];  
-    for(var name in o) {  
-        if (o.hasOwnProperty(name))  
-          result.push(name);  
-    }  
-    return result;  
+Object.keys = Object.keys || function(o) {
+    var result = [];
+    for(var name in o) {
+        if (o.hasOwnProperty(name))
+          result.push(name);
+    }
+    return result;
 };

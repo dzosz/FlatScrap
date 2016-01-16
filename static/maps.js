@@ -35,7 +35,7 @@ function CenterControl(controlDiv, map) {
     controlUI.style.cursor = 'pointer';
     controlUI.style.marginBottom = '22px';
     controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to refresh';
+    controlUI.title = 'Click to achieve nothing';
     controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
@@ -66,10 +66,13 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     infoWindow = new google.maps.InfoWindow();
+    infoWindow2 = new google.maps.InfoWindow();
 
-    google.maps.event.addListener(map, 'click', function() {
+
+    // Event click not cooperate with mark clusterer!
+    google.maps.event.addListener(map, 'click', function(event) {
         infoWindow.close();
-    });
+    });;
 
     // fit the map
     // var bounds = new google.maps.LatLngBounds();
@@ -84,7 +87,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 25, maxZoom: 13};
+    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: false};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
@@ -122,8 +125,9 @@ function createMarker(latlng, link, price, title, age) {
 
         map: map,
         position: latlng,
-        opacity: 1 - (age * 0.035)
-
+        opacity: 1 - (age * 0.035),
+        title: title,
+        link: link,
     });
 
     if (allowBubble) {
@@ -135,6 +139,7 @@ function createMarker(latlng, link, price, title, age) {
                                 'Available: <a href="' + link + '" target="_blank">HERE</a></p>';
 
             infoWindow.setContent(contentString);
+            infoWindow2.close();
             infoWindow.open(map, marker);
 
         });
