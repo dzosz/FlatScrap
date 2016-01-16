@@ -1,3 +1,5 @@
+# run it with cron as "python rqworker.py"
+
 import os
 from models import rdb
 from rq import Worker, Queue, Connection
