@@ -4,6 +4,7 @@ var markers = [];
 var prices = [];
 var allowBubble = true;
 
+
 function getRecords() {
     $(function() {
 
@@ -21,6 +22,7 @@ function getRecords() {
 
     });
 };
+
 
 function CenterControl(controlDiv, map) {
 
