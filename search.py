@@ -62,7 +62,7 @@ def scrap_subpage(link):
     full_text = '{}. {}'.format(title, ad_content)
     locations = match_words(ad_content)
     if locations and title and price:
-        return {'title': title, 'price': price, 'location': locations}
+        return {'title': title, 'price': price}, locations
 
     # print('Err (No data): [..]{}'.format(link[13:]))
     return False

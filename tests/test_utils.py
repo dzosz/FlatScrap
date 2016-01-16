@@ -1,5 +1,5 @@
 from unittest import TestCase, mock
-from utils import match_words
+import utils
 from search import scrap_ad_list, scrap_subpage
 
 
@@ -16,7 +16,7 @@ class UtilsTestCase(TestCase):
         Współlokatorzy mili, spokojni, niekonfliktowi. Studentka i \
         student z UP. W czynsz 625 zł wliczone wszystkie opłaty, \
         dodatkowo jednorazowa zwrotna kaucja 625 zł. pokój około 20m2."""
-        result = match_words(text)
+        result = utils.match_words(text)
 
         self.assertEqual(len(result), 2)
         self.assertTrue('ul piastowska' in result)
@@ -37,11 +37,10 @@ class UtilsTestCase(TestCase):
         data_goal = {
             'title': 'Pokój do wynajęcia w okolicy Obornickiej',
             'price': 650,
-            'locations': ['ulic Obornickiej']
-        }
+        }, ['ulic Obornickiej']
         result = scrap_subpage('fakelink')
 
-        self.assertDictEqual(scrap_subpage('fakelink'), data_goal)
+        self.assertEqual(result, data_goal)
 
 
 if __name__ == '__main__':

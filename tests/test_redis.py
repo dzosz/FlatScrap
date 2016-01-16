@@ -5,27 +5,49 @@ import json
 
 class RedisTestCase(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        cls.query1 = 'fake-link-1', {}, ['fake-street-1']
+        cls.geomock1 = {'latitude': 51.1, 'longitude': 17.0}
+        cls.query2 = 'fake-link-2', {}, ['fake-street-2']
+        cls.geomock2 = {'latitude': 51.15, 'longitude': 17.03}
+
     @mock.patch('time.sleep')
     @mock.patch('geopy.geocoders.GoogleV3.geocode')
     def test_db_add(self, geocoder, timer):
-        data = {'latitude': 51.1, 'longitude': 17.0}
-        geocoder.return_value.configure_mock(**data)
         timer.return_value = True
 
-        link = 'fake_link'
-        ad_data = {'locations': ['fake_street']}
+        geocoder.return_value.configure_mock(**self.geomock1)
+        self.assertTrue(convert_address(*self.query1))
 
-        self.assertTrue(convert_address(link, ad_data))
-        self.assertTrue(rdb.get(link))
+        geocoder.return_value.configure_mock(**self.geomock2)
+        self.assertTrue(convert_address(*self.query2))
+
+    def test_db_get(self):
+        response1 = rdb.get(self.query1[0])
+        self.assertTrue(response1)
+
+        response2 = rdb.get(self.query2[0])
+        self.assertTrue(response2)
 
         # check if added correctly
-        db_json = json.loads(rdb.get(link).decode())
-        self.assertIn('51.1, 17.0', db_json['coords'])
-        self.assertIn('locations', db_json)
+        db_json1 = json.loads(response1.decode())
+        self.assertTrue(self.query1[1].items() <= db_json1.items())
+        self.assertEqual(
+            "{}, {}".format(self.geomock1['latitude'], self.geomock1['longitude']),
+            db_json1['coords']
+        )
+
+        db_json2 = json.loads(response2.decode())
+        self.assertTrue(self.query2[1].items() <= db_json2.items())
+        self.assertEqual(
+            "{}, {}".format(self.geomock2['latitude'], self.geomock2['longitude']),
+            db_json2['coords']
+        )
 
     def test_db_remove(self):
-        self.assertTrue(rdb.delete('fake_link'))
-
+        self.assertTrue(rdb.delete(self.query1[0]))
+        self.assertTrue(rdb.delete(self.query2[0]))
 
 
 
