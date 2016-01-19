@@ -1,16 +1,10 @@
-from flask import Flask, render_template, jsonify
-from redis import Redis
-from datetime import date, timedelta
 import json
+from flask import Flask, render_template, jsonify
+from models import db_get_keys, db_get_values, redis
 
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-redis = Redis(
-    host=app.config['REDIS_HOST'],
-    port=app.config['REDIS_PORT'],
-    password=app.config['REDIS_PASSWORD']
-)
 
 
 @app.route('/get_recent_ads')
@@ -20,8 +14,6 @@ def get_recent_ads():
     Queries redis for 14 unique sets (each for a day) of gathered links, then gets each key.
     """
 
-    last_14_days = [(date.today() - timedelta(x)).strftime('%d%m%Y')
-                    for x in range(14)]
 
     # METHOD ONE
     # links = redis.sunion(last_14_days)
@@ -33,21 +25,12 @@ def get_recent_ads():
     # return jsonify(records)
 
     # METHOD TWO - get 14 different sets
-    pipe = redis.pipeline()
-    for day in last_14_days:
-        pipe.smembers(day)
 
+    all_keys = db_get_keys(days=14)
 
-    records = {}
-    for i, res in enumerate(pipe.execute()):
-        pipe2 = redis.pipeline()
-        links = [link.decode() for link in res if res and pipe2.get(link)]
-        for j, data in enumerate(pipe2.execute()):
-            if data:
-                records[links[j]] = json.loads(data.decode())
-                records[links[j]].update({'age': i})
+    all_ads = db_get_values(all_keys)
 
-    return jsonify(records)
+    return jsonify(all_ads)
 
 
 @app.route('/')
