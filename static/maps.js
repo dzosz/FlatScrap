@@ -2,7 +2,7 @@
 var map;
 var markers = [];
 var prices = [];
-var allowBubble = true;
+var allowBubble = false;
 
 
 function getRecords() {
@@ -47,7 +47,7 @@ function CenterControl(controlDiv, map) {
     controlText.style.paddingLeft = '5px';
     controlText.style.paddingRight = '5px';
 
-    controlText.innerHTML = 'Found ' + prices.length + ' rooms for rent in Wroclaw';
+    controlText.innerHTML = 'Found ' + markers.length + ' rooms for rent in Wroclaw';
     controlUI.appendChild(controlText);
 
 }
@@ -87,7 +87,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: false};
+    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: false, minimumClusterSize: 1};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
@@ -104,14 +104,10 @@ function addMarker(link, values) {
     var lat = values["coords"].split(',')[0];
     var lon = values["coords"].split(',')[1];
 
-    var price = values["price"];
-    var title = values["title"];
-    var age = values["age"];
     var latlng = new google.maps.LatLng(lat, lon);
 
-    var marker = createMarker(latlng, link, price, title, age);
+    var marker = createMarker(latlng, link, values);
     markers.push(marker);
-    prices.push(price);
 
     //
     //bounds.extend(latlng);
@@ -119,24 +115,42 @@ function addMarker(link, values) {
 }
 
 
-function createMarker(latlng, link, price, title, age) {
+function createMarker(latlng, link, values) {
 
-    var marker = new google.maps.Marker({
+    var contentString = '<div><ul>';
+    var contentli = '<li><span class="header">'+values.title+'</span>' +
+                        '<span class="price">'+values.price+'</span>' +
+                        '<span class="click"><a href="'+link+'" target="_blank">CLICK</a></span>';
 
-        map: map,
-        position: latlng,
-        opacity: 1 - (age * 0.035),
-        title: title,
-        link: link,
-    });
+    keys = ["Rodzaj pokoju", "Umeblowane"];
+    for (var i in keys) {
+        if (keys[i] in values) {
+            // contentString += '<span class="'+keys[i]+'">'+values[keys[i]]+'</span>';
+            contentli += '<span class="keywords">'+values[keys[i]]+'</span>';
+
+        };
+    };
+
+    contentli += '</li>';
+    contentString += '</ul></div>';
+
+    var marker = new google.maps.Marker(
+        {
+            map: map,
+            position: latlng,
+            opacity: 1 - (values["age"] * 0.035),
+            // link: link,
+            // header: values["title"],
+            // price: values["price"],
+            age: values["age"],
+            content: contentli,
+        }
+    );
+
 
     if (allowBubble) {
 
         google.maps.event.addListener(marker, 'click', function() {
-
-            var contentString = '<p><b>' + title +'</b><br>' +
-                                'Price: ' + price + '<br>' +
-                                'Available: <a href="' + link + '" target="_blank">HERE</a></p>';
 
             infoWindow.setContent(contentString);
             infoWindow2.close();
@@ -153,9 +167,9 @@ function createMarker(latlng, link, price, title, age) {
 
 function filterMarkers(value) {
 
-    for (i = 0; i < prices.length; i++) {
+    for (i = 0; i < markers.length; i++) {
 
-        if (prices[i] < value || value == 0) {
+        if (markers.price[i] < value || value == 0) {
 
             markers[i].setVisible(true);
 

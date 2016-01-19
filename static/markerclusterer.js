@@ -1058,12 +1058,13 @@ ClusterIcon.prototype.triggerClusterClick = function() {
   // Trigger the clusterclick event.
   google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
 
-  var contentString = '<p>';
   markers = this.cluster_.getMarkers();
+  var contentString = '<div><ul>';
   for (var i = 0; i < markers.length; i++) {
-    contentString += i+1 +'. <a href="' + markers[i].link + '"target="_blank">' + markers[i].title + '</a><br>';
+    // marker = markers[i];
+    contentString += markers[i].content;
   }
-  contentString += '</p>'
+  contentString += '</ul></div>';
   infoWindow2.setContent(contentString);
   infoWindow2.setPosition(this.cluster_.getCenter());
   infoWindow2.open(map);
