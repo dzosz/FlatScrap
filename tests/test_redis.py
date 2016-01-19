@@ -1,5 +1,5 @@
 from unittest import TestCase, mock
-from models import rdb, convert_address
+from models import redis, convert_address
 import json
 
 
@@ -24,10 +24,10 @@ class RedisTestCase(TestCase):
         self.assertTrue(convert_address(*self.query2))
 
     def test_db_get(self):
-        response1 = rdb.get(self.query1[0])
+        response1 = redis.get(self.query1[0])
         self.assertTrue(response1)
 
-        response2 = rdb.get(self.query2[0])
+        response2 = redis.get(self.query2[0])
         self.assertTrue(response2)
 
         # check if added correctly
@@ -46,8 +46,8 @@ class RedisTestCase(TestCase):
         )
 
     def test_db_remove(self):
-        self.assertTrue(rdb.delete(self.query1[0]))
-        self.assertTrue(rdb.delete(self.query2[0]))
+        self.assertTrue(redis.delete(self.query1[0]))
+        self.assertTrue(redis.delete(self.query2[0]))
 
 
 

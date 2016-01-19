@@ -1,9 +1,8 @@
-import unittest
-from unittest import TestCase
+from unittest import TestCase, skip
 
 
 class FlaskTestCase(TestCase):
 
-    @unittest.skip('tbc')
+    @skip('tbc')
     def TestViews(self):
         pass
