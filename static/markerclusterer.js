@@ -1059,19 +1059,23 @@ ClusterIcon.prototype.triggerClusterClick = function() {
   google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
 
   markers = this.cluster_.getMarkers();
-  var contentString = '<div><ul>';
-  for (var i = 0; i < markers.length; i++) {
-    // marker = markers[i];
-    contentString += markers[i].content;
-  }
-  contentString += '</ul></div>';
-  infoWindow2.setContent(contentString);
-  infoWindow2.setPosition(this.cluster_.getCenter());
-  infoWindow2.open(map);
-  if (markerClusterer.isZoomOnClick()) {
+
+  if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 14) {
     // Zoom into the cluster.
+    console.log(markers.length, markerClusterer.isZoomOnClick())
+
     this.map_.fitBounds(this.cluster_.getBounds());
-  };
+  } else {
+    var contentString = '<div class="panel panel-default">';
+    for (var i = 0; i < markers.length; i++) {
+      // marker = markers[i];
+      contentString += markers[i].content;
+    }
+    contentString += '</div>';
+    infoWindow2.setContent(contentString);
+    infoWindow2.setPosition(this.cluster_.getCenter());
+    infoWindow2.open(map);
+    };
 };
 
 

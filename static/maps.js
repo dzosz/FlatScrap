@@ -87,7 +87,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: false, minimumClusterSize: 1};
+    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: true};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
@@ -117,21 +117,21 @@ function addMarker(link, values) {
 
 function createMarker(latlng, link, values) {
 
-    var contentString = '<div><ul>';
-    var contentli = '<li><span class="header">'+values.title+'</span>' +
-                        '<span class="price">'+values.price+'</span>' +
-                        '<span class="click"><a href="'+link+'" target="_blank">CLICK</a></span>';
+    var contentString = '<div class="btn-group" role="group">';
+    var contentli = '<div id="tresc" class="panel-heading"><strong>'+values.title+'</strong></div>'+
+                    '<div class="panel-body">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>';
 
-    keys = ["Rodzaj pokoju", "Umeblowane"];
+
+
+    keys = ["Rodzaj pokoju", "Umeblowane", "price"];
     for (var i in keys) {
         if (keys[i] in values) {
             // contentString += '<span class="'+keys[i]+'">'+values[keys[i]]+'</span>';
-            contentli += '<span class="keywords">'+values[keys[i]]+'</span>';
-
+            contentli += keys[i]+' : '+values[keys[i]]+'<br>';
         };
     };
 
-    contentli += '</li>';
+    contentli += '</div>';
     contentString += '</ul></div>';
 
     var marker = new google.maps.Marker(
