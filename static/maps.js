@@ -71,6 +71,8 @@ function initMap() {
     var myOptions = {
         disableAutoPan: true,
         zIndex: null,
+        // fontSize: 20,
+        // lineHeight: 0.5,
         boxStyle: {
           opacity: 1
         },
@@ -93,9 +95,9 @@ function initMap() {
     });
 
     // Event click not cooperate with mark clusterer!
-    google.maps.event.addListener(map, 'click', function(event) {
-        infoWindow.close();
-    });
+    // google.maps.event.addListener(map, 'click', function(event) {
+    //     infoWindow.close();
+    // });
 
     // fit the map
     // var bounds = new google.maps.LatLngBounds();
@@ -141,7 +143,7 @@ function addMarker(link, values) {
 function createMarker(latlng, link, values) {
 
     var contentString = '<div class="btn-group" role="group">';
-    var contentli = '<div class="panel-heading"><strong>'+values.title+'</strong></div>'+
+    var contentli = '<div class="panel-heading"><h6>'+values.title+'</h6></div>'+
                     '<div class="panel-body" >Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
                     'Cena: '+values.price+'<br>';
 
