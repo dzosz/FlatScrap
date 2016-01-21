@@ -1071,17 +1071,25 @@ ClusterIcon.prototype.triggerClusterClick = function() {
         }
 
         contentString += '</div>';
-        infoWindow2.setContent(contentString);
-        infoWindow2.setPosition(this.cluster_.getCenter());
-        infoWindow2.open(map);
+        // infoWindow2.setContent(contentString);
+        // infoWindow2.setPosition(this.cluster_.getCenter());
+        // infoWindow2.open(map);
 
-        if (markers.length > 2) {
-            $(".panel-body").hide();
-            $(".panel-heading").click(function(){
+        infobox.setContent(contentString);
+        infobox.setPosition(this.cluster_.getCenter());
+
+        google.maps.event.addListener(infobox, 'domready', function() {
+            if (markers.length > 2) {
                 $(".panel-body").hide();
-                $(this).next(".panel-body").toggle()
-            });
-        }
+                // $(".panel-body").eq(1).show();
+                $(".panel-body").first().show();
+
+                // $("panel panel-default").next(".panel-body").toggle()
+            };
+        });
+
+        infobox.open(this.map_);
+
     };
 };
 

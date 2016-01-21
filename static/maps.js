@@ -1,7 +1,6 @@
 // GLOBALS
 var map;
 var markers = [];
-var prices = [];
 var allowBubble = false;
 
 
@@ -61,18 +60,42 @@ function initMap() {
         maxZoom: 16,
         minZoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
     };
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     infoWindow = new google.maps.InfoWindow();
     infoWindow2 = new google.maps.InfoWindow();
 
+    var myOptions = {
+        disableAutoPan: false
+        ,zIndex: null
+        ,boxStyle: {
+          opacity: 1
+         }
+        ,closeBoxMargin: "10px 10px 10px 10px"
+        ,infoBoxClearance: new google.maps.Size(1, 1)
+        ,isHidden: false
+        ,pane: "floatPane"
+        ,enableEventPropagation: true
+    };
+
+    infobox = new InfoBox(myOptions);
+
+    $(document).on('click', '.panel-heading', function() {
+        $(".panel-body").hide();
+        // $(".panel-heading").click(function() {
+        //     console.log(this);
+        //     $(".panel-body").hide();
+            $(this).next(".panel-body").show()
+        // });
+    });
 
     // Event click not cooperate with mark clusterer!
     google.maps.event.addListener(map, 'click', function(event) {
         infoWindow.close();
-    });;
+    });
 
     // fit the map
     // var bounds = new google.maps.LatLngBounds();
@@ -113,19 +136,18 @@ function addMarker(link, values) {
     //bounds.extend(latlng);
 
 }
-$(".panel-body").hide();
+
 
 function createMarker(latlng, link, values) {
 
     var contentString = '<div class="btn-group" role="group">';
-    var contentli = '<div id="1" class="panel-heading"><strong>'+values.title+'</strong></div>'+
-                    '<div id="1" class="panel-body">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
+    var contentli = '<div class="panel-heading"><strong>'+values.title+'</strong></div>'+
+                    '<div class="panel-body" >Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
                     'Cena: '+values.price+'<br>';
 
     keys = ["Rodzaj pokoju", "Umeblowane"];
     for (var i in keys) {
         if (keys[i] in values) {
-            // contentString += '<span class="'+keys[i]+'">'+values[keys[i]]+'</span>';
             contentli += keys[i]+' : '+values[keys[i]]+'<br>';
         };
     };
@@ -184,3 +206,4 @@ function filterMarkers(value) {
 
 // wait with init after website is loaded
 // google.maps.event.addDomListener(window, 'load', getRecords);
+google.maps.event.addDomListener(window, 'load', initMap);
