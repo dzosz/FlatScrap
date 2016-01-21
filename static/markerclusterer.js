@@ -1059,9 +1059,12 @@ ClusterIcon.prototype.triggerClusterClick = function() {
     google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
     markers = this.cluster_.getMarkers();
 
-    if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 14) {
+    if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 15) {
+        // CUSTOM ZOOMING
+        map.panTo(this.cluster_.getCenter());
+        map.setZoom(15);
         // Zoom into the cluster.
-        this.map_.fitBounds(this.cluster_.getBounds());
+        // this.map_.fitBounds(this.cluster_.getBounds());
     } else {
 
         var contentString = '<div class="panel panel-default">';

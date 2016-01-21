@@ -69,16 +69,16 @@ function initMap() {
     infoWindow2 = new google.maps.InfoWindow();
 
     var myOptions = {
-        disableAutoPan: false
-        ,zIndex: null
-        ,boxStyle: {
+        disableAutoPan: true,
+        zIndex: null,
+        boxStyle: {
           opacity: 1
-         }
-        ,closeBoxMargin: "10px 10px 10px 10px"
-        ,infoBoxClearance: new google.maps.Size(1, 1)
-        ,isHidden: false
-        ,pane: "floatPane"
-        ,enableEventPropagation: true
+        },
+        closeBoxMargin: "10px 10px 10px 10px",
+        // infoBoxClearance: new google.maps.Size(1, 1),
+        isHidden: false,
+        pane: "floatPane",
+        enableEventPropagation: true
     };
 
     infobox = new InfoBox(myOptions);
@@ -110,7 +110,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: true};
+    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: false};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
