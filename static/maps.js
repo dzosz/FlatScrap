@@ -113,17 +113,16 @@ function addMarker(link, values) {
     //bounds.extend(latlng);
 
 }
-
+$(".panel-body").hide();
 
 function createMarker(latlng, link, values) {
 
     var contentString = '<div class="btn-group" role="group">';
-    var contentli = '<div id="tresc" class="panel-heading"><strong>'+values.title+'</strong></div>'+
-                    '<div class="panel-body">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>';
+    var contentli = '<div id="1" class="panel-heading"><strong>'+values.title+'</strong></div>'+
+                    '<div id="1" class="panel-body">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
+                    'Cena: '+values.price+'<br>';
 
-
-
-    keys = ["Rodzaj pokoju", "Umeblowane", "price"];
+    keys = ["Rodzaj pokoju", "Umeblowane"];
     for (var i in keys) {
         if (keys[i] in values) {
             // contentString += '<span class="'+keys[i]+'">'+values[keys[i]]+'</span>';
@@ -138,7 +137,6 @@ function createMarker(latlng, link, values) {
         {
             map: map,
             position: latlng,
-            opacity: 1 - (values["age"] * 0.035),
             // link: link,
             // header: values["title"],
             // price: values["price"],

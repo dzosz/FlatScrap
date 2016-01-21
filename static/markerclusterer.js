@@ -1054,29 +1054,37 @@ function ClusterIcon(cluster, styles, opt_padding) {
  * Triggers the clusterclick event and zoom's if the option is set.
  */
 ClusterIcon.prototype.triggerClusterClick = function() {
-  var markerClusterer = this.cluster_.getMarkerClusterer();
-  // Trigger the clusterclick event.
-  google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
+    var markerClusterer = this.cluster_.getMarkerClusterer();
+    // Trigger the clusterclick event.
+    google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
+    markers = this.cluster_.getMarkers();
 
-  markers = this.cluster_.getMarkers();
+    if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 14) {
+        // Zoom into the cluster.
+        this.map_.fitBounds(this.cluster_.getBounds());
+    } else {
 
-  if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 14) {
-    // Zoom into the cluster.
-    console.log(markers.length, markerClusterer.isZoomOnClick())
+        var contentString = '<div class="panel panel-default">';
 
-    this.map_.fitBounds(this.cluster_.getBounds());
-  } else {
-    var contentString = '<div class="panel panel-default">';
-    for (var i = 0; i < markers.length; i++) {
-      // marker = markers[i];
-      contentString += markers[i].content;
-    }
-    contentString += '</div>';
-    infoWindow2.setContent(contentString);
-    infoWindow2.setPosition(this.cluster_.getCenter());
-    infoWindow2.open(map);
+        for (var i = 0; i < markers.length; i++) {
+          contentString += markers[i].content;
+        }
+
+        contentString += '</div>';
+        infoWindow2.setContent(contentString);
+        infoWindow2.setPosition(this.cluster_.getCenter());
+        infoWindow2.open(map);
+
+        if (markers.length > 2) {
+            $(".panel-body").hide();
+            $(".panel-heading").click(function(){
+                $(".panel-body").hide();
+                $(this).next(".panel-body").toggle()
+            });
+        }
     };
 };
+
 
 
 /**
