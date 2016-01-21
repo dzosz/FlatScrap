@@ -49,7 +49,7 @@ def scrap_and_enqueue(link):
     ad_content = ad_page_soup.find('div', id='textContent').find('p', 'pding10 lheight20 large').text
     # preappend title to content for better matching
     full_text = '{}. {}'.format(data['title'], ad_content)
-    locations = match_words(ad_content)
+    locations = match_words(full_text)
 
     if locations:
         rqueue.enqueue(convert_address, link, data, locations)
