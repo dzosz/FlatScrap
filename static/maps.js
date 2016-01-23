@@ -69,15 +69,18 @@ function initMap() {
     infoWindow2 = new google.maps.InfoWindow();
 
     var myOptions = {
-        disableAutoPan: true,
+        // disableAutoPan: true,
         zIndex: null,
         // fontSize: 20,
         // lineHeight: 0.5,
         boxStyle: {
-          opacity: 1
+          opacity: 1,
+          minWidth: '300px',
+          minHeight: '200px'
         },
         closeBoxMargin: "10px 10px 10px 10px",
         // infoBoxClearance: new google.maps.Size(1, 1),
+
         isHidden: false,
         pane: "floatPane",
         enableEventPropagation: true
@@ -143,8 +146,8 @@ function addMarker(link, values) {
 function createMarker(latlng, link, values) {
 
     var contentString = '<div class="btn-group" role="group">';
-    var contentli = '<div class="panel-heading"><h6>'+values.title+'</h6></div>'+
-                    '<div class="panel-body" >Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
+    var contentli = '<div class="panel-heading"><h5>'+values.title+'</h5></div>'+
+                    '<div class="panel-body" style="display: none">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
                     'Cena: '+values.price+'<br>';
 
     keys = ["Rodzaj pokoju", "Umeblowane"];
@@ -172,6 +175,7 @@ function createMarker(latlng, link, values) {
 
     if (allowBubble) {
 
+        // currently replaced with infobox
         google.maps.event.addListener(marker, 'click', function() {
 
             infoWindow.setContent(contentString);

@@ -1061,6 +1061,7 @@ ClusterIcon.prototype.triggerClusterClick = function() {
 
     if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 15) {
         // CUSTOM ZOOMING
+        infobox.close();
         map.panTo(this.cluster_.getCenter());
         map.setZoom(15);
         // Zoom into the cluster.
@@ -1082,13 +1083,13 @@ ClusterIcon.prototype.triggerClusterClick = function() {
         infobox.setPosition(this.cluster_.getCenter());
 
         google.maps.event.addListener(infobox, 'domready', function() {
-            if (markers.length > 2) {
-                $(".panel-body").hide();
+            // if (markers.length > 2) {
+                // $(".panel-body").hide();
                 // $(".panel-body").eq(1).show();
                 $(".panel-body").first().show();
 
                 // $("panel panel-default").next(".panel-body").toggle()
-            };
+            // };
         });
 
         infobox.open(this.map_);
