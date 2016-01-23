@@ -63,14 +63,18 @@ def convert_address(link, ad_data, locations):
     Converts location name to latitude and longituted,
     then pushes the data to redis db.
     """
+
+    # does not provide fitting these bounds
+    bounds = [51.035, 16.86, 51.20, 17.17]
     geolocator = geopy.geocoders.GoogleV3()
+
     for address in locations:
 
         # prevent ip block
         time.sleep(1)
 
-        new_loc = geolocator.geocode('{}, Wrocław'.format(address))
-        if (new_loc.latitude != 51.1078852 and
+        new_loc = geolocator.geocode('{}, Wrocław'.format(address), bounds=bounds, language='pl')
+        if ((new_loc.latitude != 51.1078852 and new_loc.longitude != 17.0385376) and
                 51.035 < new_loc.latitude < 51.20 and
                 16.86 < new_loc.longitude < 17.17):
 
