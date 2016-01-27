@@ -115,7 +115,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 20, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: false};
+    var mcOptions = {gridSize: 30, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: false};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
