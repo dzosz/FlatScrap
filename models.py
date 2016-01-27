@@ -77,7 +77,11 @@ def convert_address(link, ad_data, locations):
         # prevent ip block
         time.sleep(1)
         street = '{}, Wrocław'.format(address)
-        new_loc = geolocator.geocode(street, bounds=bounds, language='pl')
+        try:
+            new_loc = geolocator.geocode(street, bounds=bounds, language='pl')
+        except geopy.exc.GeocoderQuotaExceeded:
+            print('Geologging blocked for', link)
+            return False
         if ((new_loc.latitude != 51.1078852 and new_loc.longitude != 17.0385376) and
                 51.035 < new_loc.latitude < 51.20 and
                 16.86 < new_loc.longitude < 17.17):
