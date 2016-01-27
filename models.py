@@ -52,7 +52,9 @@ def db_update_keys(links):
     pipe = redis.pipeline()
     today = date.today().strftime('%d%m%Y')
     for link in links:
+        # print('adding', link,'to', today)
         pipe.sadd(today, link)
+        redis.expire(today, 60*60*24*14)
 
     return pipe.execute()
 
@@ -66,14 +68,16 @@ def convert_address(link, ad_data, locations):
 
     # does not provide fitting these bounds
     bounds = [51.035, 16.86, 51.20, 17.17]
-    geolocator = geopy.geocoders.GoogleV3()
+    geolocator = geopy.geocoders.GoogleV3(
+        api_key="AIzaSyDpsSJB0uPSX_FzgsqvKpZB02rxhyQXuzM",
+        domain="maps.google.pl")
 
     for address in locations:
 
         # prevent ip block
         time.sleep(1)
-
-        new_loc = geolocator.geocode('{}, Wrocław'.format(address), bounds=bounds, language='pl')
+        street = '{}, Wrocław'.format(address)
+        new_loc = geolocator.geocode(street, bounds=bounds, language='pl')
         if ((new_loc.latitude != 51.1078852 and new_loc.longitude != 17.0385376) and
                 51.035 < new_loc.latitude < 51.20 and
                 16.86 < new_loc.longitude < 17.17):
