@@ -23,7 +23,8 @@ def scrap_ad_list(link):
 def verify_links(links):
     """Get rid of already existing in db ads"""
     all_ads = db_get_keys()
-    return [link for link in links if link.encode() not in all_ads]
+    # print(all_ads)
+    return [link for link in links if all(link.encode() not in day for day in all_ads)]
 
 
 def scrap_and_enqueue(link):
