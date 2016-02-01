@@ -26,7 +26,7 @@ def get_recent_ads():
 
     # METHOD TWO - get 14 different sets
 
-    all_keys = db_get_keys(days=14)
+    all_keys = db_get_keys(days=5)
 
     all_ads = db_get_values(all_keys)
 
