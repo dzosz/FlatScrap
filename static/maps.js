@@ -89,20 +89,20 @@ function initMap() {
     infobox = new InfoBox(myOptions);
 
     $(document).on('click', '.panel-heading', function() {
-        $(".panel-body").hide();
+        // $(".panel-body").hide();
         // $(".panel-heading").click(function() {
         //     console.log(this);
         //     $(".panel-body").hide();
-            $(this).next(".panel-body").show()
+            $(this).next(".panel-body").toggle()
         // });
     });
 
-    // Event click not cooperate with mark clusterer!
+    // Event click does not cooperate with mark clusterer!
     // google.maps.event.addListener(map, 'click', function(event) {
     //     infoWindow.close();
     // });
 
-    // fit the map
+    // fit the zoom to the cluster map
     // var bounds = new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
 
@@ -115,7 +115,7 @@ function initMap() {
 function addHeader() {
 
     // CLUSTERING
-    var mcOptions = {gridSize: 30, maxZoom: 16, zoomOnClick: true, minimumClusterSize: 1, averageCenter: false};
+    var mcOptions = {gridSize: 30, maxZoom: 16, zoomOnClick: false, minimumClusterSize: 1, averageCenter: false};
     var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     // ADD HEADER
@@ -124,8 +124,20 @@ function addHeader() {
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
+    // google.maps.event.addListener(markerCluster, 'clusteringend', function (c) { log("click: "); } )
+
 }
 
+function showFinished(par) {
+    console.log("finished");
+    // clusters = markerCluster.getClusters();
+    // for( var i=0, l=clusters.length; i<l; i++ ){
+    //     for( var j=0, le=clusters[i].markers_.length; j<le; j++ ){
+    //         marker = clusters[i].markers_[j]; // <-- Here's your clustered marker
+    //         console.log(marker)
+    //     }
+    // }
+}
 
 function addMarker(link, values) {
 
@@ -146,9 +158,10 @@ function addMarker(link, values) {
 function createMarker(latlng, link, values) {
 
     var contentString = '<div class="btn-group" role="group">';
-    var contentli = '<div class="panel-heading"><h5>'+values.title+'</h5></div>'+
-                    '<div class="panel-body" style="display: none">Link: <a href="'+link+'">Ogloszenie dostepne na OLX.pl</a><br>' +
-                    'Cena: '+values.price+'<br>';
+    var contentli = '<div class="panel-heading"><h5>' + values.title+'</h5></div>' +
+                    '<div class="panel-body">Link: ' +
+                    '<a href="' + link + '">Ogloszenie dostepne na OLX.pl</a><br>' +
+                    'Cena: ' + values.price + '<br>';
 
     keys = ["Rodzaj pokoju", "Umeblowane"];
     for (var i in keys) {
@@ -169,6 +182,7 @@ function createMarker(latlng, link, values) {
             // price: values["price"],
             age: values["age"],
             content: contentli,
+            title: values.title
         }
     );
 

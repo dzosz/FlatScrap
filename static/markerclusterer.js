@@ -717,6 +717,28 @@ MarkerClusterer.prototype.repaint = function() {
  */
 MarkerClusterer.prototype.redraw = function() {
   this.createClusters_();
+
+  // CUSTOM CODE
+  $("#results").html("");
+  var clusters = this.clusters_;
+  console.log("redraw");
+  for (var i = 0; i < clusters.length; i++) {
+    var titles = [];
+    if (!this.map_.getBounds().contains(clusters[i].getCenter())) {
+        continue;
+    }
+
+    var mrks = clusters[i].markers_;
+    for (j=0; j < mrks.length; j++) {
+      // console.log(mrks[j])
+      mrk = mrks[j];
+      if (titles.indexOf(mrk.title.toLowerCase()) == -1) {
+          titles.push(mrk.title.toLowerCase());
+          $("#results").append(mrk.content);
+          // console.log(mrk.content);
+      }
+    }
+  }
 };
 
 
@@ -1060,41 +1082,37 @@ ClusterIcon.prototype.triggerClusterClick = function() {
     markers = this.cluster_.getMarkers();
 
     if (markerClusterer.isZoomOnClick() && markers.length > 1 && this.map_.getZoom() < 15) {
-        // CUSTOM ZOOMING
-        infobox.close();
-        map.panTo(this.cluster_.getCenter());
-        map.setZoom(15);
+        // // CUSTOM ZOOMING
+        // infobox.close();
+        // map.panTo(this.cluster_.getCenter());
+        // map.setZoom(15);
+
         // Zoom into the cluster.
-        // this.map_.fitBounds(this.cluster_.getBounds());
-    } else {
+        this.map_.fitBounds(this.cluster_.getBounds());
+    } // else {
 
-        var contentString = '<div class="panel panel-default">';
+    //     var contentString = '<div class="panel panel-default">';
+    //     for (var i = 0; i < markers.length; i++) {
+    //       contentString += markers[i].content;
+    //     }
+    //     contentString += '</div>';
 
-        for (var i = 0; i < markers.length; i++) {
-          contentString += markers[i].content;
-        }
+    //     infobox.setContent(contentString);
+    //     infobox.setPosition(this.cluster_.getCenter());
 
-        contentString += '</div>';
-        // infoWindow2.setContent(contentString);
-        // infoWindow2.setPosition(this.cluster_.getCenter());
-        // infoWindow2.open(map);
+    //     google.maps.event.addListener(infobox, 'domready', function() {
+    //         // if (markers.length > 2) {
+    //             // $(".panel-body").hide();
+    //             // $(".panel-body").eq(1).show();
+    //             $(".panel-body").first().show();
 
-        infobox.setContent(contentString);
-        infobox.setPosition(this.cluster_.getCenter());
+    //             // $("panel panel-default").next(".panel-body").toggle()
+    //         // };
+    //     });
 
-        google.maps.event.addListener(infobox, 'domready', function() {
-            // if (markers.length > 2) {
-                // $(".panel-body").hide();
-                // $(".panel-body").eq(1).show();
-                $(".panel-body").first().show();
+    //     infobox.open(this.map_);
 
-                // $("panel panel-default").next(".panel-body").toggle()
-            // };
-        });
-
-        infobox.open(this.map_);
-
-    };
+    // };
 };
 
 

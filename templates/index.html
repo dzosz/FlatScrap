@@ -2,34 +2,95 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nouislider.min.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
     <meta charset="utf-8">
     <base target="_blank">
     <style>
-    html, body, #map {
+    html, body {
         margin: 0;
         padding: 0;
         height: 100%;
         width: 100%;
-        color:black;
+        color:black
+    }
+    #map {
+        width: 71%;
+        height: 100%;
+        position: relative;
+        float: left;
+    }
+    .left-sidebar {
+        width: 29%;
+        height: 100%;
+        position: relative;
+        float: left;
+        padding: 10px;
     }
     .panel-body {
         font-size: 13px;
+    }
+    .sliderz {
+        margin: 10px;
+    }
+    #filter-area {
+        height: 170px;
+        margin: 0 auto;
+        padding: 10px;
+        border: 1px solid #BFBFBF;
     }
     </style>
 
 </head>
 <body>
+<div class="left-sidebar" id="left-sidebar">
+    <div class="filter-area" id="filter-area">
+        Filtry
+        <div class="sliderz" id="slider-days"></div>
+        <div class="sliderz" id="slider-price"></div>
+    </div>
+    <div class="result-flat" id="result-flat">
+    Results
+        <div id="results" class="panel panel-default">
+        </div>
+    </div>
+</div>
 <div id="map"></div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClJloL52eKrtxq9jMTyK3Mg-HAPm-Zuvc"></script>">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClJloL52eKrtxq9jMTyK3Mg-HAPm-Zuvc"></script>
 <script defer src="{{ url_for('static', filename='maps.js') }}"></script>
-<script  src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-<script  src="{{ url_for('static', filename='markerclusterer.js') }}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='markerclusterer.js') }}"></script>
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+<script src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
+<script>
+var slider1 = document.getElementById('slider-days');
+noUiSlider.create(slider1, {
+    start: [0, 5],
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 10
+    },
 
+});
+var slider2 = document.getElementById('slider-price');
+noUiSlider.create(slider2, {
+    start: [0, 1500],
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 1500
+    },
+    step: 100,
+    pips: { // Show a scale with the slider
+        mode: 'steps',
+        density: 2
+    }
+});
 
+</script>
 
 </body>
 </html>
